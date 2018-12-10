@@ -1,0 +1,19 @@
+image:
+  pullPolicy: Always
+daemonset:
+  updateStrategy: RollingUpdate
+kubeStateMetrics:
+  enabled: true
+clusterAgent:
+  enabled: true
+deployment:
+  dogstatsdNodePort: 8125
+  traceNodePort: 8126
+datadog:
+  logsEnabled: true
+  logsConfigContainerCollectAll: true
+  # apmEnabled: true
+  processAgentEnabled: true
+  nonLocalTraffic: true
+  logLevel: INFO
+  nonLocalTraffic: true

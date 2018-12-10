@@ -1,0 +1,12 @@
+version: '3'
+services:
+  shell:
+    build: ../tooling
+    volumes:
+      - ~/.kube:/root/.kube
+      - ~/.config/gcloud:/root/.config/gcloud
+      - ..:/app
+networks:
+  default:
+    external:
+      name: bridge

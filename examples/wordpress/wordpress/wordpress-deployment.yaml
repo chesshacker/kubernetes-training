@@ -1,0 +1,107 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - name: wordpress
+        image: "docker.io/bitnami/wordpress:4.9.8-debian-9"
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "no"
+        - name: MARIADB_HOST
+          value: mariadb
+        - name: MARIADB_PORT_NUMBER
+          value: "3306"
+        - name: WORDPRESS_DATABASE_NAME
+          value: "bitnami_wordpress"
+        - name: WORDPRESS_DATABASE_USER
+          value: "bn_wordpress"
+        - name: WORDPRESS_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb
+              key: mariadb-password
+        - name: WORDPRESS_USERNAME
+          value: "steve"
+        - name: WORDPRESS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wordpress
+              key: wordpress-password
+        - name: WORDPRESS_EMAIL
+          value: "steve@ortizaggies.com"
+        - name: WORDPRESS_FIRST_NAME
+          value: "Steve"
+        - name: WORDPRESS_LAST_NAME
+          value: "Ortiz"
+        - name: WORDPRESS_BLOG_NAME
+          value: "Kubernetes Training"
+        - name: WORDPRESS_TABLE_PREFIX
+          value: "wp_"
+        - name: SMTP_HOST
+          value: "mailhog"
+        - name: SMTP_PORT
+          value: "587"
+        - name: SMTP_USER
+          value: "Steve Ortiz"
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wordpress
+              key: smtp-password
+        - name: SMTP_USERNAME
+          value: "steve"
+        - name: SMTP_PROTOCOL
+          value: "tls"
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        livenessProbe:
+          httpGet:
+            path: /wp-login.php
+            port: http
+          failureThreshold: 6
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /wp-login.php
+            port: http
+          failureThreshold: 6
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        volumeMounts:
+        - mountPath: /bitnami/apache
+          name: wordpress-data
+          subPath: apache
+        - mountPath: /bitnami/wordpress
+          name: wordpress-data
+          subPath: wordpress
+        - mountPath: /bitnami/php
+          name: wordpress-data
+          subPath: php
+        resources:
+          requests:
+            cpu: 300m
+            memory: 512Mi
+      volumes:
+      - name: wordpress-data
+        persistentVolumeClaim:
+          claimName: wordpress

@@ -1,0 +1,5 @@
+rbac:
+  create: false
+ingressShim:
+  defaultIssuerName: letsencrypt-prod
+  defaultIssuerKind: ClusterIssuer

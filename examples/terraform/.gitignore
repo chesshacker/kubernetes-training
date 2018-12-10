@@ -1,0 +1,6 @@
+# Terraform thing
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+
+/output

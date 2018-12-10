@@ -1,0 +1,11 @@
+version: '3'
+services:
+  reveal:
+    build: .
+    ports:
+      - 8000:8000
+      - 35729:35729
+    volumes:
+      - ./index.html:/app/index.html
+      - ./slides.md:/app/slides.md
+      - ./assets:/app/assets
