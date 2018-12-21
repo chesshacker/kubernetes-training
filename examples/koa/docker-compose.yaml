@@ -6,8 +6,11 @@ services:
       - .:/app
       - /app/node_modules
     environment:
-      STATSD_HOST: localhost
+      STATSD_HOST: statsd
       STATSD_PREFIX: example.
       DATADOG_ENV: local
     ports:
       - "3000:3000"
+  statsd:
+    image: node:10-alpine
+    command: node -e "require('dgram').createSocket('udp4').on('message', msg => {console.log(msg.toString())}).bind(8125)"
