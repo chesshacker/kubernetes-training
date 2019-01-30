@@ -5,6 +5,7 @@ services:
     volumes:
       - ~/.kube:/root/.kube
       - ~/.config/gcloud:/root/.config/gcloud
+      - ~/.helm:/root/.helm
       - ..:/app
 networks:
   default:

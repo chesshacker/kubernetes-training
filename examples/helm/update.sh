@@ -2,10 +2,10 @@
 
 cd "$(dirname "$0")"
 
-if [ -z "${IP_ADDRESS}" ]; then
-  echo "IP address not found"
-  exit 1
-fi
+# if [ -z "${IP_ADDRESS}" ]; then
+#   echo "IP address not found"
+#   exit 1
+# fi
 
 if [ -z "${DATADOG_API_KEY}" ]; then
   echo "Error: Missing DATADOG_API_KEY=..."
@@ -23,11 +23,12 @@ helm upgrade --install \
 # nginx ingress
 helm upgrade --install \
   --namespace kube-system \
-  --set controller.service.loadBalancerIP=${IP_ADDRESS} \
+#  --set controller.service.loadBalancerIP=${IP_ADDRESS} \
   --wait \
   nginx-ingress stable/nginx-ingress
 
 # cert manager
+kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml
 helm upgrade --install \
   --namespace kube-system \
   --values values/cert-manager.yaml \
