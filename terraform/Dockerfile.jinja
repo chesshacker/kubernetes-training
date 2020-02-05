@@ -1,0 +1,4 @@
+FROM python:3-alpine3.8
+RUN pip install jinja2-cli[yaml]
+WORKDIR /app
+ENTRYPOINT ["/usr/local/bin/jinja2"]

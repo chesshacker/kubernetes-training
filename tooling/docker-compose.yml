@@ -7,6 +7,8 @@ services:
       - ~/.config/gcloud:/root/.config/gcloud
       - ~/.helm:/root/.helm
       - ..:/app
+    ports:
+      - 8080:8080
 networks:
   default:
     external:

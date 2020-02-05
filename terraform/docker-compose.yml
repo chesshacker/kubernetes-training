@@ -1,0 +1,8 @@
+version: '3'
+services:
+  jinja:
+    build:
+      context: .
+      dockerfile: Dockerfile.jinja
+    volumes:
+      - .:/app

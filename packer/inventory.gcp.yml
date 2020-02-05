@@ -1,0 +1,6 @@
+plugin: gcp_compute
+projects:
+  - heb-sadc-training
+filters:
+auth_kind: serviceaccount
+service_account_file: "/app/service-account.json"
